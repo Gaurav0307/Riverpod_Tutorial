@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_tutorial/providers/product_provider.dart';
 import 'package:riverpod_tutorial/shared/cart_icon.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final allProducts = ref.watch(productsProvider);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan.shade100,
@@ -15,7 +19,8 @@ class HomeScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: GridView.builder(
-          itemCount: 8,
+          itemCount: allProducts.length,
+          physics: const BouncingScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             mainAxisSpacing: 20,
@@ -25,7 +30,29 @@ class HomeScreen extends StatelessWidget {
           itemBuilder: (context, index) {
             return Container(
               padding: const EdgeInsets.all(20),
-              color: Colors.blueGrey.withOpacity(0.05),
+              color: Colors.blueGrey.withValues(alpha: 0.05),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(allProducts[index].image, height: 60),
+                  const SizedBox(height: 5),
+                  Text(
+                    allProducts[index].title,
+                    style: const TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    '\$${allProducts[index].price}',
+                    style: const TextStyle(
+                      color: Colors.green,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
             );
           },
         ),
