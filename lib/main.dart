@@ -31,3 +31,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// Generate Providers
+// dart run build_runner watch -d
