@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_tutorial/providers/cart_provider.dart';
 import 'package:riverpod_tutorial/providers/product_provider.dart';
 import 'package:riverpod_tutorial/shared/cart_icon.dart';
 
@@ -9,6 +10,7 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final allProducts = ref.watch(productsProvider);
+    final cartProducts = ref.watch(cartNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -28,6 +30,11 @@ class HomeScreen extends ConsumerWidget {
             childAspectRatio: 0.8,
           ),
           itemBuilder: (context, index) {
+            bool isInCart =
+                false; // You can determine this based on your cart state
+            isInCart = cartProducts.any(
+              (product) => product.id == allProducts[index].id,
+            );
             return Container(
               padding: const EdgeInsets.all(20),
               color: Colors.blueGrey.withValues(alpha: 0.05),
@@ -51,25 +58,35 @@ class HomeScreen extends ConsumerWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 10),
                   GestureDetector(
                     onTap: () {
-                      // Handle add to cart action
+                      if (isInCart) {
+                        ref
+                            .read(cartNotifierProvider.notifier)
+                            .removeFromCart(allProducts[index]);
+                      } else {
+                        ref
+                            .read(cartNotifierProvider.notifier)
+                            .addToCart(allProducts[index]);
+                      }
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
+                        horizontal: 6,
                         vertical: 5,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.blue,
+                        border: Border.all(
+                          color: isInCart ? Colors.red : Colors.blue,
+                        ),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: const Text(
-                        'Add to Cart',
+                      child: Text(
+                        isInCart ? 'Remove from Cart' : 'Add to Cart',
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
+                          color: isInCart ? Colors.red : Colors.blue,
+                          fontSize: 11,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
