@@ -15,6 +15,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   @override
   Widget build(BuildContext context) {
     final cartProducts = ref.watch(cartNotifierProvider);
+    final cartTotal = ref.watch(cartTotalProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -27,35 +28,50 @@ class _CartScreenState extends ConsumerState<CartScreen> {
         child: Column(
           children: [
             // output cart products here
-            Column(
-              children: cartProducts.map((product) {
-                return Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 10,
-                  ),
-                  margin: const EdgeInsets.only(bottom: 5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: Colors.grey.withValues(alpha: 0.1),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Image.asset(product.image, height: 50),
-                      const SizedBox(width: 10),
-                      Text(product.title),
-                      const Spacer(),
-                      Text('\$${product.price}'),
-                    ],
-                  ),
-                );
-              }).toList(),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: cartProducts.map((product) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 10,
+                      ),
+                      margin: const EdgeInsets.only(bottom: 5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Colors.grey.withValues(alpha: 0.1),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Image.asset(product.image, height: 50),
+                          const SizedBox(width: 10),
+                          Text(product.title),
+                          const Spacer(),
+                          Text('\$${product.price}'),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
             ),
 
             // output totals here
+            const Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Total',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                ),
+                Text('\$$cartTotal'),
+              ],
+            ),
           ],
         ),
       ),

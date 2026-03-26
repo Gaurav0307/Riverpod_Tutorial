@@ -60,3 +60,43 @@ abstract class _$CartNotifier extends $Notifier<Set<Product>> {
     element.handleCreate(ref, build);
   }
 }
+
+@ProviderFor(cartTotal)
+final cartTotalProvider = CartTotalProvider._();
+
+final class CartTotalProvider extends $FunctionalProvider<int, int, int>
+    with $Provider<int> {
+  CartTotalProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'cartTotalProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$cartTotalHash();
+
+  @$internal
+  @override
+  $ProviderElement<int> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  int create(Ref ref) {
+    return cartTotal(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(int value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<int>(value),
+    );
+  }
+}
+
+String _$cartTotalHash() => r'eb41abb2aaf99a994c64ad66074b8b6a63cf9148';
