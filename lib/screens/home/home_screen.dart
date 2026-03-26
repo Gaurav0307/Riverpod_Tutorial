@@ -72,10 +72,9 @@ class HomeScreen extends ConsumerWidget {
                       }
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 6,
-                        vertical: 5,
-                      ),
+                      width: 100,
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(vertical: 3),
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: isInCart ? Colors.red : Colors.blue,
@@ -83,11 +82,11 @@ class HomeScreen extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
-                        isInCart ? 'Remove from Cart' : 'Add to Cart',
+                        isInCart ? 'Remove' : 'Add to Cart',
                         style: TextStyle(
                           color: isInCart ? Colors.red : Colors.blue,
                           fontSize: 11,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
